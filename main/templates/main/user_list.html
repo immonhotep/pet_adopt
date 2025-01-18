@@ -1,0 +1,100 @@
+
+{% extends "main/base.html" %}
+{% block content %}
+
+<div class="container py-5">
+<table class="table align-middle mb-0 bg-white border  border-primary border-2 shadow-4-strong">
+  <thead class="bg-light">
+    <tr>
+      <th>Name</th>
+      <th>Pets</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in page_obj %}
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <img
+              src="{{user.userprofile.imageURL}}"
+              class="rounded-circle"
+              alt=""
+              style="width: 45px; height: 45px"
+              />
+          <div class="ms-3">
+            <p class="fw-bold mb-1"><a href="{% url 'user_detail' user.pk %}">{{user.first_name}} {{user.last_name}}</a></p>
+            <p class="text-muted mb-0">{{user.email}}</p>
+          </div>
+        </div>
+     </td>
+      <td>
+    
+        
+     
+      <div class="avatar-stack">
+
+      <span class="avatar"><a class="text-white" href="{% url 'user_pets' user.pk %}">{{user.user_pets.count}}</a></span>
+      {% for pet in user.user_pets.all|slice:12 %} 
+        
+        <a data-mdb-tooltip-init title="{{pet.name}}" href="{% url 'pet_detail' pet.slug %}"><img class="avatar" src="{{pet.imageURL}}" /></a>
+      {% endfor  %}
+    </div>
+    </td>
+    <td>
+    
+     {% for message in unanswered %}
+      {% if  message.sender == user %} 
+
+        
+        <button  class="btn btn-danger btn-sm" type="button" >
+          <span class="spinner-grow spinner-grow-sm text-warning" aria-hidden="true"></span>
+          <span role="status">New messages</span>
+        </button>
+
+      {% endif %} 
+     {% endfor %}
+    </td>
+
+
+    <td>
+    {% if request.user.is_superuser and request.user.pk != user.pk %}
+    <a data-mdb-tooltip-init title="delete user: {{user.username}}" href="{% url 'delete_user' user.pk %}" class="btn btn-danger btn-sm"><i class="fa-solid fa-ban"></i></a>
+    {% endif %}
+    </td>
+    
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+                    {% if page_obj.has_other_pages %}
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination pagination-sm mt-6 ms-8">
+                                {% if page_obj.has_previous %}
+                                <li class="page-item"><a class="page-link text-white me-1 my-3" style="background-color:#4c1104;" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+                                {% endif%}
+                                {% for page  in page_obj.paginator.page_range %}
+                                <li class="page-item"><a class="page-link  text-white me-1 my-3" style="background-color:#4c1104;" href="?page={{page}}">{{page}}</a></li>
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link  text-white me-1 my-3" style="background-color:#4c1104;" href="?page={{page_obj.next_page_number}}">Next</a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+
+
+
+<div class="text-center py-5">
+  <a class="btn btn-dark btn-sm" href="javascript:history.back()"> <i class="fa fa-chevron-circle-left fa-lg" aria-hidden="true"></i> Back</a>                            
+</div>
+
+
+
+</div>
+
+{% endblock content %}

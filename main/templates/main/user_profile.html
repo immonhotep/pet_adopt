@@ -1,0 +1,82 @@
+{% extends 'main/base.html'%}
+
+{% block content %} 
+
+<div class="container py-5 ">
+<div class="container">
+    <div class="span3 well">
+        <center>
+        <a href="#aboutModal" data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#userModal" ><img src="{{user.userprofile.imageURL}}"  width="140" height="140" class="img-circle"></a>
+        <h3>{{user.first_name}} {{user.last_name}}</h3>
+        <em>click my face for more</em>
+		</center>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-mdb-ripple-init data-mdb-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title ms-2" id="myModalLabel">More About {{user.first_name}}</h4>
+                    </div>
+                <div class="modal-body">
+                    <center>
+                    <img src="{{user.userprofile.imageURL}}"  width="140" height="140" border="0" class="img-circle"></a>
+                    <h3 class="media-heading">{{user.first_name}} {{user.last_name}}</h3>
+                    <span><strong>Email: </strong></span>
+                        <span class="label label-warning">{{user.email}}</span>     
+                    </br>
+                    <span><strong>Phone: </strong></span>
+                        <span class="label label-warning">{{user.userprofile.phone}}</span>     
+                    </center>
+                    <hr>
+                    <center>
+                    <p class="text-left"><strong>Bio: </strong><br>
+                        {{user.userprofile.bio|safe}}</p>
+                    <br>
+                    </center>
+                </div>
+                <div class="modal-footer">
+                    <center>
+                    {% if request.user.is_superuser and request.user.pk != user.pk %}
+                    <a href="{% url 'delete_user' user.pk  %}" class="btn btn-danger btn-sm"><i class="fa-solid fa-ban" aria-hidden="true"></i></a>
+                    {% endif %}
+                    <a href="{% url 'user_pets' user.pk  %}" class="btn btn-outline-primary btn-sm"><i class="fa fa-paw" aria-hidden="true"></i> See pets</a>
+                    <button type="button" class="btn btn-default" data-mdb-ripple-init data-mdb-dismiss="modal">I got enought information about {{user.first_name}}</button>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+ {% if form %}
+ <div class="d-flex justify-content-center align-items-center">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="container py-1 my-1 border border-primary border-2 shadow-4-strong">
+            <h5 class="text-muted text-center"><small>Send message to {{user.first_name}} {{user.last_name}}</small></h5>
+            {{form.media}}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-outline-primary btn-sm">Submit</button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+
+{% include "main/user_messages.html" %}
+
+
+
+
+
+
+<div class="text-center py-5">
+  <a class="btn btn-dark btn-sm" href="javascript:history.back()"> <i class="fa fa-chevron-circle-left fa-lg" aria-hidden="true"></i> Back</a>                            
+</div>
+
+
+{% endblock content%}

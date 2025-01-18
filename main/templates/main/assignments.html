@@ -1,0 +1,107 @@
+{% extends "main/base.html" %}
+
+
+{% block content %}
+
+{% if myassigments %}
+<div class="container py-5 my-5 ">
+<h5 class="text-center my-4">Your adoptation assignments</h5>
+<table class="table align-middle mb-0 bg-white border border-2 border-dark shadow-4-strong">
+  <thead class="bg-light">
+    <tr>
+      <th>Pet name</th>
+      <th>Category</th>
+      <th>Donater</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for assignment in myassigments %}
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <img
+              src="{{assignment.pet.imageURL}}"
+              class="rounded-circle"
+              alt=""
+              style="width: 45px; height: 45px"
+              />
+          <div class="ms-3">
+           <a href="{% url 'pet_detail' assignment.pet.slug   %}"> <p class="fw-bold mb-1">{{assignment.pet.name}}</p></a>
+          </div>
+        </div>
+      </td>
+      <td>
+        <p class="fw-normal mb-1">{{assignment.pet.category.name}}</p>
+        
+      </td>
+  
+      <td>
+      <div class="avatar-stack">
+
+        <a data-mdb-tooltip-init title="{{assignment.pet.donater.first_name}} {{assignment.pet.donater.last_name}}" href="{% url 'user_detail' assignment.pet.donater.pk %}"><img class="avatar" src="{{assignment.pet.donater.userprofile.imageURL}}" /></a>
+    </div>
+    </td>
+      
+      <td>
+        <button
+                type="button"
+                class="btn btn-link btn-rounded btn-sm fw-bold"
+                data-mdb-ripple-color="dark"
+                data-mdb-ripple-init data-mdb-modal-init data-mdb-target="#deleteModal-{{assignment.pet.pk}}"
+                
+                
+                >
+         <i class="fa-regular fa-trash-can text-danger"></i>
+        
+        </button>
+      </td>
+    </tr>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal-{{assignment.pet.pk}}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Do you want to remove adoptation assigment ? </h5>
+            <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+          {{assignment.pet.name}}
+          
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-mdb-dismiss="modal">Cancel</button>
+            <form method="POST" action="{% url 'adoptation_request' assignment.pet.pk  %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" data-mdb-ripple-init>Remove</button>
+            </form>
+          </div>
+        </div>
+      </div>
+  <!-- Modal -->
+
+
+
+
+
+
+    {% endfor %}
+
+
+  </tbody>
+</table>
+</div>
+{% else %}
+
+<h3 class="text-center my-4">Sorry you still not have any assigment</h3>
+
+{% endif %}
+
+
+
+
+
+{% endblock content %}

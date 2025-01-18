@@ -1,0 +1,43 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="card py-5 px-5 shadow-4-strong">
+        <div class="card-body">
+            <h5 class="card-title text-center py-4">Send email</h5>
+
+    
+
+            <form method="POST" action="{% url 'sendmail' contact_message.pk %}">
+            {% csrf_token %}
+
+            <div class="form-outline my-2" data-mdb-input-init>
+                <input type="text" id="formTextExample1" class="form-control" aria-describedby="textExample1" disabled />
+                <label class="form-label" for="formTextExample1">{{contact_message.email}}</label>
+            </div>
+            <div class="form-outline my-2" data-mdb-input-init>
+                <input type="text" id="formTextExample1" class="form-control" aria-describedby="textExample1" disabled />
+                <label class="form-label" for="formTextExample1">{{contact_message.title}}</label>
+            </div>
+            <div class="form-outline" data-mdb-input-init>
+                <textarea name="email-reply" class="form-control" id="textAreaExample" rows="8" required></textarea>
+                <label class="form-label" for="textAreaExample">Reply</label>   
+            </div>
+            <button  type="submit" class="btn btn-primary btn-sm py-2 my-2">send</button>
+
+            </form>
+
+        </div>
+    </div>
+
+
+
+ </div>
+
+
+
+
+
+{% endblock content %}

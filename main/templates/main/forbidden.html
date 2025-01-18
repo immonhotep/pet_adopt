@@ -1,0 +1,20 @@
+{% extends "main/base.html" %}
+{% block content %}
+
+
+<div class="container bg-dark text-white py-5 border border-5 border-danger mx-auto my-5">
+     <div class="container py-5">
+          <div class="row">
+               <div class="col-md-2 text-center">
+                    <p><i class="fa fa-exclamation-triangle fa-5x text-center text-danger"></i><br/>Access Denied</p>
+               </div>
+               <div class="col-md-10">
+                    <h3></h3>
+                    <p>Sorry but you unable to access this page.<br/>Please go back to the previous page to continue browsing.</p>
+                    <a class="btn btn-warning" href="javascript:history.back()">Back</a>
+               </div>
+          </div>
+     </div>
+</div>
+{% endblock content %}
+

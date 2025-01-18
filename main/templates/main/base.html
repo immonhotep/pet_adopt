@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Pet Adoptation platform</title>
+        
+                    <!-- Font Awesome -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+                    
+                    <!-- Google Fonts -->
+                    <link
+                    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+                    rel="stylesheet"
+                    />
+                    <!-- MDB -->
+                    <link
+                    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.min.css"
+                    rel="stylesheet"
+                    />
+
+                    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+                    
+                    
+
+
+
+      
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container px-5">
+                {% if profile %}
+                <a class="navbar-brand" href="{% url 'update_profile' %}"><img class="rounded-circle" src="{{profile.imageURL}}"   style="width:50px;height:50px;" /></a>
+                <small class="text-center text-white">{{profile.user}}</small>
+                {% endif %}
+
+                {% if request.user.is_authenticated  %}
+                <form class="d-flex input-group w-auto ms-5" method="GET" action="{% url 'search' %}">
+                    <input
+                        type="search"
+                        name="petsearch"
+                        class="form-control rounded"
+                        placeholder="Search for pet"
+                        aria-label="Search"
+                        aria-describedby="search-addon"
+                    />
+                    <span class="input-group-text border-0" id="search-addon">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </form>
+                        {% if  unanswered.count > 0 %}
+                        <a href="{% url 'list_users' %}" class="nav-link active ms-2"> 
+                            <button type="button" class="btn btn-secondary btn-sm">
+                                <small>unanswered messages</small>
+                                <span class="badge badge-danger ms-2">{{unanswered.count}}</span>                     
+                            </button>    
+                        </a> 
+                        {% endif %}
+                        
+                        
+                        
+                        
+                        
+                {% endif %}
+
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a></li>
+                       {% if request.user.is_authenticated  %}
+
+                      
+
+                        <div class="dropdown">
+                            <button
+                            class="btn btn-dark bg-dark dropdown-toggle"
+                            type="button"
+                            id="dropdownMenu2"
+                            data-mdb-dropdown-init
+                            aria-expanded="false">
+                            <i class="fa fa-paw text-success" aria-hidden="true"></i> Manage pets
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                {% if request.user.is_superuser %}
+                                <li><a href="{% url 'add_category' %}" class="dropdown-item"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add category</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'add_pet' %}"  class="dropdown-item" type="button"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add Pet</a></li>
+                                <li><a href="{% url 'user_pets' request.user.pk %}" class="dropdown-item"><i class="fa fa-th-list" aria-hidden="true"></i> List my pets</a></li>
+                                {% if request.user.adopters.count > 0%}
+                                <li><a href="{% url 'list_assignment' %}" class="dropdown-item"> <i class="fa fa-list-alt" aria-hidden="true"></i> My current adoptation assigments ({{request.user.adopters.count}})</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+
+                       
+
+                        
+
+
+                        {% endif %}
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'list_users' %}"><i class="fa fa-user"></i> Users</a></li>
+                        {% endif %}
+                        {% if request.user.is_superuser  %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'list_messages' %}"><i class="fa fa-comment" aria-hidden="true"></i> See Messages</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'send_message' %}"><i class="fa fa-question-circle" aria-hidden="true"></i> Contact</a></li>
+                        {% endif %}
+                        {% if not request.user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url "login" %}"><i class="fa fa-sign-in"></i> Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'user_signup' %}"><i class="fa fa-user-plus"></i> Register</a></li>
+                        {% else %}
+                        <form method="POST" action="{% url 'user_logout' %}">
+                        {% csrf_token %}
+                        <li class="nav-item"><button  type="submit" class="nav-link"><i class="fa fa-sign-out"></i> Logout</button></li>
+                        </form>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+       
+        <div class="container py-2">
+         {% include "main/messages.html" %}
+        </div>
+        {% block content %}
+
+        {% endblock content %}
+       
+        
+               
+   
+
+            <!-- MDB -->
+            <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/8.1.0/mdb.umd.min.js"
+            ></script>
+       
+    </body>
+</html>

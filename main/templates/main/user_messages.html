@@ -1,0 +1,177 @@
+
+<!--  messages start   -->
+
+{% if user_messages %}
+<section class="gradient-custom">
+  <div class="container my-5 py-5">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-12 col-lg-10 col-xl-8">
+        <div class="card">
+          <div class="card-body p-4">
+            <h4 class="text-center mb-4 pb-2">Your messages</h4>
+
+            {% for message in user_messages %}
+            <div class="row">
+              <div class="col">
+                <div class="d-flex flex-start">
+                  <img class="rounded-circle shadow-1-strong me-3"
+                    src="{{message.sender.userprofile.imageURL}}" alt="avatar" width="65"
+                    height="65"  />
+                  <div class="flex-grow-1 flex-shrink-1">
+                    <div>
+                      <div class="d-flex justify-content-between align-items-center">
+                        <p class="mb-1">
+                          {{message.sender.first_name}} {{message.sender.last_name}}  <span class="small">-{{message.date}}</span>
+                          {% if message.sender == request.user %}
+                          <i class="text-warning">to:  
+                          <img class="rounded-circle shadow-1-strong mx-2"
+                          src="{{message.receiver.userprofile.imageURL}}" alt="avatar"
+                          width="25" height="25" data-mdb-tooltip-init title="{{message.receiver.first_name}} {{message.receiver.last_name}}" />
+                          </i>
+                          {% endif %}
+                        </p>
+                       
+                        <a href="" data-mdb-modal-init data-mdb-target="#ReplyModal-{{message.pk}}"><i class="fas fa-reply fa-xs"></i><span class="small"> reply</span></a>
+                       
+                      </div>
+                      <p class="small mb-0">
+                       <i>{{message.title}}</i>
+                      </p>
+
+                      <p class="small mb-0">
+                       {{message.body|safe}}
+                      </p>
+                    </div>
+                    {% if message.replies.count > 0 %}
+
+                    <a href='#' class='replies'>  {{message.replies.count}} replies</a>
+
+
+                    <div id="replyDIV" class="got_replies"  >
+
+                    {% for reply in message.replies.all %}
+                    <div class="d-flex flex-start mt-4">
+                      <a class="me-3" href="#">
+                        <img class="rounded-circle shadow-1-strong"
+                          src="{{reply.reply_sender.userprofile.imageURL}}" 
+                          width="45" height="45" />
+                      </a>
+                      <div class="flex-grow-1 flex-shrink-1">
+                        <div>
+                          <div class="d-flex justify-content-between align-items-center">
+                            <p class="mb-1">
+                              {{reply.reply_sender.first_name}} {{reply.reply_sender.last_name}}  <span class="small">- {{reply.reply_date}}</span>
+                            </p>
+                           
+                          </div>
+            
+                           <p class="small mb-0">
+                          <i> {{reply.reply_title}}</i>
+                          </p>
+                          <p class="small mb-0">
+                           {{reply.reply_body|safe}}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+
+                    </div>
+                
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="ReplyModal-{{message.pk}}" tabindex="-1" aria-labelledby="ReplyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ReplyModalLabel">Send reply to {{message.sender.first_name}}{{message.sender.last_name}}</h5>
+                    <button type="button" class="btn-close" data-mdb-ripple-init data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action={% url 'reply_user_message' message.pk message.sender.id %}>
+                {% csrf_token%}
+               
+                <div class="modal-body">
+                <!--
+                <div data-mdb-input-init class="mb-4">
+                    <input type="text" name="title"  class="form-control" required="True"/>
+                <label class="form-label" for="form1Example1">Title</label>
+
+                <div data-mdb-input-init class="mb-4">
+                    <textarea class="form-control" name="body" rows="4" required="True"></textarea>
+                    <label class="form-label" for="form4Example3">Message</label>
+                </div>
+
+                </div> -->
+                {{form.media}}
+                {{form}}
+                
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-mdb-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-mdb-ripple-init>Send</button>
+
+                </div>
+                </form>
+                </div>
+            </div>
+            </div>
+
+
+
+
+            {% endfor%}
+
+          </div>
+        </div>
+
+
+          {% if user_messages.has_other_pages %}
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination pagination-sm mt-6 ms-8">
+                                {% if user_messages.has_previous %}
+                                <li class="page-item"><a class="page-link text-white me-1 my-3" style="background-color:#4c1104;" href="?page={{user_messages.previous_page_number}}">Previous</a></li>
+                                {% endif%}
+                                {% for page  in user_messages.paginator.page_range %}
+                                <li class="page-item"><a class="page-link  text-white me-1 my-3" style="background-color:#4c1104;" href="?page={{page}}">{{page}}</a></li>
+                                {% endfor %}
+                                {% if user_messages.has_next %}
+                                <li class="page-item"><a class="page-link  text-white me-1 my-3" style="background-color:#4c1104;" href="?page={{user_messages.next_page_number}}">Next</a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+
+                   
+
+{% endif %}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+
+$('.replies').click(function(e){
+  e.preventDefault();
+  $(this).next(".got_replies").fadeToggle(); 
+})
+
+$(".got_replies").fadeToggle();
+</script>
+
+
+
+

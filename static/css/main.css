@@ -1,0 +1,99 @@
+
+#pet-card{
+    height: 550px;
+    max-width: 350px;
+    
+}
+
+#pet-image{
+
+    height: 300px;
+    width:  100%;
+
+}
+
+#pet-image-category{
+
+    height: 200px;
+    width:  100%;
+}
+
+
+
+#pet-card-small{
+    height: 450px;
+    
+    
+}
+
+
+.avatar {
+    --bs-avatar-width: 50px;
+    --bs-avatar-bg: #44546f;
+    position: relative;
+    width: var(--bs-avatar-width);
+    height: var(--bs-avatar-width);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ds-text-inverse);
+    line-height: 1;
+    font-size: 14px;
+    border-radius: 50%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    background-color: var(--bs-avatar-bg);
+  }
+  .avatar > img, .avatar > svg {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .avatar-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  
+  .avatar-stack {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .avatar-stack .avatar {
+    overflow: hidden;
+    margin-left: -8px;
+    border: 2px solid white;
+  }
+  .avatar-stack .avatar:last-child > .avatar-stack .avatar {
+    margin-left: 0;
+  }
+  
+  .avatar-xs {
+    --bs-avatar-width: 16px;
+  }
+  
+  .avatar-sm {
+    --bs-avatar-width: 24px;
+  }
+  
+  .avatar-lg {
+    --bs-avatar-width: 40px;
+  }
+  
+  .avatar-xl {
+    --bs-avatar-width: 96px;
+  }
+  
+  .avatar-xxl {
+    --bs-avatar-width: 128px;
+  }
+
+
+
+

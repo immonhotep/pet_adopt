@@ -1,0 +1,20 @@
+{% extends "main/base.html" %}
+
+
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="card py-5 px-5 shadow-4-strong" style="width:70%">
+{% include "main/form_heading.html" %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.media }}
+    {{form.as_p}}
+  <button class="btn btn-primary btn-sm">Submit</button>
+  <a class="btn btn-light btn-sm" href="javascript:history.back()">Back</a>
+</form>
+</div>
+</div>
+{% endblock content %}

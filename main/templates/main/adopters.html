@@ -1,0 +1,76 @@
+{% extends "main/base.html" %}
+
+
+{% block content %}
+
+
+{% if adoptation %}
+
+<h5 class="text-center my-5 "><i class="fa fa-smile-o" aria-hidden="true"></i></i>Adoptation information</div>
+
+<div class="container py-4 my-4 border border-2 border-dark shadow-4-strong">
+
+<table class="table align-middle mb-0 bg-white">
+  <thead class="bg-light">
+    <tr>
+      <th>Name</th>
+      <th>Donater</th>
+      <th>Possible adopters</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <img
+              src="{{adoptation.pet.imageURL}}"
+              class="rounded-circle"
+              alt=""
+              style="width: 45px; height: 45px"
+              />
+          <div class="ms-3">
+           <a href="{% url 'pet_detail' adoptation.pet.slug %}"> <p class="fw-bold mb-1">{{adoptation.pet.name}}</p></a>
+            
+          </div>
+        </div>
+      </td>
+
+      
+
+        <td>
+        <div class="d-flex align-items-center">
+         <a data-mdb-tooltip-init title="{{adoptation.pet.donater.first_name}} {{adoptation.pet.donater.last_name}}" href={% url 'user_detail' adoptation.pet.donater.pk   %}> <img
+              src="{{adoptation.pet.donater.userprofile.imageURL}}"
+              class="rounded-circle"
+            
+              style="width: 45px; height: 45px"/></a>
+              
+  
+        </div>
+      </td>
+
+      <td>
+      <div class="avatar-stack">
+      <span class="avatar"><a class="text-white" href="{% url 'list_all_adopters' adoptation.pet.slug %}">{{adoptation.adopter_list.count}}</a></span>
+      {% for adopter in adoptation.adopter_list.all|slice:8 %} 
+          <a data-mdb-tooltip-init title="{{adopter.first_name}} {{adopter.last_name}}"  href="{% url 'user_detail' adopter.pk %}"><img class="avatar" src="{{adopter.userprofile.imageURL}}" /></a>
+      {% endfor  %} 
+    </div>
+    </td>
+
+      
+    </tr>
+  
+  </tbody>
+</table>
+
+</div>
+{% else %}
+
+<h5 class="text-center py-5 my-5"><i class="fa-solid fa-face-sad-tear"></i>Sorry but nobody want to adopt this pet yet</div>
+
+{% endif %}
+
+{% endblock content %}

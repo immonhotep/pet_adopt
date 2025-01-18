@@ -1,0 +1,30 @@
+{% extends "main/base.html" %}
+
+
+{% block content %}
+
+<div class="container py-1 my-5 shadow-4-strong ">
+
+<h5 class="text-center my-5">Replies ({{replies.count}})</h5>
+
+        {% for reply in replies %}
+
+        <div class="card">
+          <div class="card-body">
+            <p>{{reply.reply}}</p>
+
+            <div class="d-flex justify-content-between">
+              <div class="d-flex flex-row align-items-center">
+                <img src="{{reply.person.userprofile.imageURL}}"width="25"
+                  height="25" />
+                <p class="small mb-0 ms-2">{{reply.person.username}} - {{reply.date}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+
+        {% endfor %}
+
+</div>
+{% endblock content %}

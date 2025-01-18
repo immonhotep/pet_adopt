@@ -1,0 +1,87 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="container">
+            <div class="row">
+         
+                <div class="col-lg-8 border border-2 border-primary my-5">
+                 
+                    <div class="card mb-4">
+                       <a href="#!"><img  class="card-img-top" src="{{pet_category.imageURL}}" /></a>
+                        
+                        <div class="card-body">
+                            <h2 class="card-title">{{pet_category.name}}</h2>
+                            <p class="card-text">{{pet_category.description|safe}}</p>
+                            
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                    
+                    {% for pet in pets %}
+                    <div class="col">
+                        <div class="card" id="pet-card-small">
+                        <img id="pet-image-category" src="{{pet.imageURL}}" class="card-img-top" />
+                        <div class="card-body">
+                            <h5 class="card-title">{{pet.name}}</h5>
+                            <p class="card-text">
+                                {{pet.description|truncatechars:100|safe}}
+                            </p>
+
+                            <div class="row">
+                                <div class="col-md-2 mx-1">
+                                <a data-mdb-tooltip-init title="view {{pet.name}}" href="{% url 'pet_detail' pet.slug%}" class="btn btn-primary btn-sm"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                                </div>
+                               {% if pet.donater == request.user or request.user.is_superuser %}
+                                <div class="col-md-2 mx-1">
+                                <a data-mdb-tooltip-init title="update {{pet.name}}" href="{% url 'update_pet' pet.slug %}" class="btn btn-warning btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="col-md-2 mx-1">
+                                <a data-mdb-tooltip-init title="delete {{pet.name}}" href="{% url 'delete_pet' pet.slug %}" class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                </div>
+                                {% endif %}
+                                 {% if pet.donater != request.user %}
+                                <div class="col-md-2 mx-1">
+                                    <a data-mdb-tooltip-init title="view {{pet.donater.first_name}}"   href="{% url 'user_detail' pet.donater.pk %}" class="btn btn-success btn-sm"><i class="fa fa-user" aria-hidden="true"></i></a>
+                                </div>
+                                {% endif   %}
+
+                               
+                            </div>
+
+                            
+                        </div>
+                        </div>
+                      
+                    </div>
+                    {% endfor %}
+                    </div>
+
+
+
+                    <!-- Pagination-->
+
+                    {% if pets.has_other_pages %}
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination pagination-sm mt-6 ms-8">
+                                {% if pests.has_previous %}
+                                <li class="page-item"><a class="page-link text-white me-1 my-3" style="background-color:#4c1104;" href="?page={{pets.previous_page_number}}">Previous</a></li>
+                                {% endif%}
+                                {% for page  in pets.paginator.page_range %}
+                                <li class="page-item"><a class="page-link  text-white me-1 my-3" style="background-color:#4c1104;" href="?page={{page}}">{{page}}</a></li>
+                                {% endfor %}
+                                {% if pets.has_next %}
+                                <li class="page-item"><a class="page-link  text-white me-1 my-3" style="background-color:#4c1104;" href="?page={{pets.next_page_number}}">Next</a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                   
+                </div>
+
+
+
+
+
+{% endblock content %}

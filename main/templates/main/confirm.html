@@ -1,0 +1,30 @@
+{% extends 'main/base.html'%}
+
+{% block content %}
+
+<div class="container bg-dark text-white py-5 border border-5 border-danger mx-auto my-5">
+     <div class="container py-5">
+          <div class="row">
+               <div class="col-md-2 text-center">
+                    <p><i class="fa fa-times-circle fa-5x text-center text-warning"></i><br/>Warning</p>
+               </div>
+               <div class="col-md-10">
+                    
+                   <h3><p>Are you sure about that you want to do this ?</p></h3>
+                    <form method="POST" action="">
+                    {% csrf_token %}
+                    <button  type="submit" class="btn btn-danger">Delete</button>
+                    <a class="btn btn-info" href="javascript:history.back()">Back</a>
+                                              
+                    </form>
+                   
+               </div>
+               
+          </div>
+     </div>
+</div>
+
+
+
+
+{% endblock content %}

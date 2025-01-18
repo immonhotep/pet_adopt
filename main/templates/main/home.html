@@ -1,0 +1,103 @@
+ {% extends "main/base.html" %}
+
+{% block content %}
+
+
+<!-- Page Content-->
+    <div class="container px-4 px-lg-5">
+            <!-- Heading Row-->
+            <div class="row gx-4 gx-lg-5 align-items-center my-5">
+                {% if random_pet %}
+                <div class="col-lg-7"><a href="{% url 'pet_detail' random_pet.slug %}"><img class="img-fluid rounded mb-4 mb-lg-0" src="{{random_pet.imageURL}}"/></a></div>
+                {% endif%}
+                <div class="col-lg-5">
+                    <h1 class="font-weight-light">Adopt your pet</h1>
+                    <p>
+                    Praesent dolor tellus, tempor mattis purus in, tincidunt fringilla felis. Morbi vehicula efficitur justo, non vulputate nulla molestie vel. Praesent accumsan euismod fermentum. Duis fringilla ut nulla non egestas. Morbi ultricies quam in enim ornare dapibus. Pellentesque eget semper diam. Sed vel felis id justo bibendum sodales. Morbi massa odio, eleifend sed sapien nec, malesuada fermentum arcu. Etiam volutpat erat neque, ac interdum nisi pellentesque a. Donec sed erat elementum, luctus ligula at, iaculis ex. Pellentesque quis libero vitae nibh sagittis commodo a eget ex. In tincidunt scelerisque nisl, ut porta arcu volutpat a. Nullam viverra lorem ac est tristique ultrices. 
+                    </p>
+
+                </div>
+            </div>
+            <!-- Call to Action-->
+            <div class="card text-white bg-secondary my-5 py-4 text-center">
+                <div class="card-body"><h3><p class="text-white m-0">Pet Categories</p></h3></div>
+            </div>
+          
+            {% if categories %}
+            <div class="row gx-4 gx-lg-5">
+
+                {% for category in categories %}
+                <div class="col-md-4 mb-5">
+                    <div class="card h-100 shadow-4-strong">
+                        
+                            <div
+                            class="bg-image hover-overlay shadow-1-strong rounded"
+                            data-mdb-ripple-init
+                            data-mdb-ripple-color="light"
+                            >
+                            <img id="pet-image" src="{{category.imageURL}}" class="w-100"/>
+                            <a href="#!">
+                                <div class="mask" style="background-color: hsla(0, 0%, 98%, 0.2)"></div>
+                            </a>
+                            </div>
+                
+                        <div class="card-body">
+                            <h2 class="card-title">{{category.name}}</h2>
+                            <p class="card-text">{{category.description|truncatechars:200|safe}}</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-md-2 mx-1">
+                                    <a  data-mdb-tooltip-init title="view category"  class="btn btn-primary btn-sm" href="{% url 'category_details' category.slug %}"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                                </div>
+                                <div class="col-md-2 mx-1">
+                                {% if category.donater == request.user %}
+                                 <a  data-mdb-tooltip-init title="update category"     class="btn btn-warning btn-sm" href="{% url 'update_category' category.slug %}"><i class="fa fa-wrench" aria-hidden="true"></i></a>
+                                </div>
+                            
+                                <div class="col-md-2 mx-1">
+                                <a  data-mdb-tooltip-init title="delete category"  class="btn btn-danger btn-sm" href="{% url 'delete_category' category.slug %}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                {% endif %}
+                               
+          
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+               
+                
+            </div> 
+            {% else %}
+            <h5 class="text-center">Currently not created any pet categories</h5>
+            {% endif %}
+
+
+            {% if is_paginated %}
+            <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-sm">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link  text-white mx-1" style="background-color:#4c1104;" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+                {% endif%}
+                {% for page  in page_obj.paginator.page_range %}
+                <li class="page-item"><a class="page-link text-white mx-1" style="background-color:#4c1104;" href="?page={{page}}">{{page}}</a></li>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link  text-white mx-1" style="background-color:#4c1104;" href="?page={{page_obj.next_page_number}}">Next</a></li>
+                {% endif %}
+            </ul>
+            </nav>
+            {% endif %}
+
+            
+
+    </div>
+
+
+
+               
+
+
+{% endblock content%}

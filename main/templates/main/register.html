@@ -1,0 +1,43 @@
+{% extends 'main/base.html'%}
+{% block content %}
+
+
+<div class="container py-5 my-5">
+	<div class="row text-center mb-4">
+	
+	</div>
+	<div class="row text-center">
+	    <div class="col-md-6 offset-md-3">
+	        <div class="card">
+	            <div class="card-body bg-light border border-2 border-primary" >
+	                <div class="login-title">
+	                    <h4>Registration</h4>
+	                </div>
+	                <div class="login-form mt-4">
+	                    <form method="POST" action={% url 'user_signup' %}>
+                        {% csrf_token %}
+                        <div class="form-row">
+                        {% for field in form%}
+                            <div class="form-group col-md-12">
+                              {{field}}
+                            </div>
+                        {% endfor %}
+                          </div>
+                         <div class="form-row">
+                        <div class="form-group">
+                               
+                    </div>
+
+						                               
+                        <div class="form-row py-4">
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </div>
+                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>
+
+{% endblock content %}

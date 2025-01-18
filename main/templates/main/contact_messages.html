@@ -1,0 +1,90 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+<div class="container py-5">
+
+{% if messages %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Title</th>
+      <th scope="col">Date</th>
+      <th scope="col">Answered</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for message in messages %}
+    <tr>
+      <th scope="row"><a data-mdb-tooltip-init title="view message" href="{% url 'message_detail' message.pk %}"><i class="fa-solid fa-eye" aria-hidden="true"></i></a></th>
+      <td>{{message.name}}</td>
+      <td>{{message.email}}</td>
+      <td>{{message.phone}}</td>
+      <td>{{message.title}}</td>
+      <td>{{message.date}}</td>
+      <td><a data-mdb-tooltip-init title="view answers" href="{% url 'list_replies' message.pk %}">{% if message.answered %} <i class="fa-solid fa-check text-success"></i> {% else %} <i class="fa-solid fa-x text-danger"></i> {% endif %}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+
+            {% if is_paginated %}
+            <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-sm">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link  text-white mx-1" style="background-color:#4c1104;" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+                {% endif%}
+                {% for page  in page_obj.paginator.page_range %}
+                <li class="page-item"><a class="page-link text-white mx-1" style="background-color:#4c1104;" href="?page={{page}}">{{page}}</a></li>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link  text-white mx-1" style="background-color:#4c1104;" href="?page={{page_obj.next_page_number}}">Next</a></li>
+                {% endif %}
+            </ul>
+            </nav>
+            {% endif %}
+
+
+</div>
+
+{% if message_detail %}
+
+<div class="container py-5">
+
+<div class="col-md-6 col-lg-7 col-xl-8">
+
+        <ul class="list-unstyled">
+          <li class="d-flex justify-content-between mb-4">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between p-3">
+                <p class="fw-bold mb-0">{{message_detail.name}} - <i>(Email: {{message_detail.email}} Tel: {{message_detail.phone}})</i></p>
+                <p class="text-muted small mb-0"><i class="far fa-clock"></i> {{message_detail.date}}</p>
+              </div>
+              <div class="card-body">
+                <p class="mb-0">
+                  <h5 class="text-center">{{message_detail.title}}</h5>
+                  {{message_detail.message}}
+                </p>
+                <a href="{% url 'sendmail' message_detail.pk  %}" class="btn btn-outline-primary btn-sm py-2 my-2"><i class="fa-regular fa-envelope"></i> Send answer email</a>
+                <a href="javascript:history.go(-1)" class="btn btn-outline-dark btn-sm py-2 my-2">Back</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+    </div>
+
+
+</div>
+{% endif %}
+
+
+
+
+{% endblock content %}
