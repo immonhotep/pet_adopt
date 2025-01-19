@@ -990,7 +990,7 @@ class ListAllAdopters(CustomLoginRequiredMixin,View):
 
 
 
-# Probléma működi ahogy nme kéne neki 
+
 class SendreplyMessage(CustomLoginRequiredMixin,View):
     
     
@@ -1013,33 +1013,6 @@ class SendreplyMessage(CustomLoginRequiredMixin,View):
           
         return redirect(request.META.get('HTTP_REFERER'))
     
-
-    """
-    def get(self,request,pk,id):
-
-        replyform = ReplyForm()
-        context={'replyform':replyform}
-        return render(self.request,'main/user_messages.html',context)
-
-    def post(self,request,pk,id):
-
-        usermessage = get_object_or_404(UserMessage,pk=pk)
-        receiver = get_object_or_404(User,id=id)
-        
-        replyform = ReplyForm(self.request.POST)
-        if replyform.is_valid():
-            data=replyform.save(commit=False)
-            data.reply_message=usermessage
-            data.reply_sender=self.request.user
-            data.reply_receiver=receiver
-            data.save()
-
-        else:
-            for error in list(replyform.errors.values()):
-                messages.error(self.request,error)
-
-        return redirect(request.META.get('HTTP_REFERER'))
-    """
 
 
     login_url = "/login/"
